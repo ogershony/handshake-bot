@@ -1,7 +1,6 @@
 # Imports
 import csv
 import os
-import time
 from datetime import datetime
 import constants as const
 

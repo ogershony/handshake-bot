@@ -71,6 +71,10 @@ def main():
                 print(f"Error applying to job: {e}")
                 continue
 
+            time.sleep(
+                5
+            )  # Sleep for a few seconds to avoid overwhelming the server and to mimic human behavior
+
         # Navigate to the next page
         if page < total_pages - 1:
             driver_handler.go_to_next_page()
