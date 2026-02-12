@@ -1,0 +1,18 @@
+[project]
+name = "orens-handshake-bot"
+version = "0.1.0"
+description = "Automated bot for applying to jobs on Handshake"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "selenium>=4.0.0",
+    "webdriver-manager>=4.0.0",
+    "python-dotenv>=1.0.0",
+]
+
+[tool.setuptools]
+py-modules = ["main", "driver_handler", "constants"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
