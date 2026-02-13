@@ -1,8 +1,12 @@
+# Local imports
+from cover_letter_generator import generate_cover_letter
+
 # Imports
 import csv
 import os
 from datetime import datetime
 import constants as const
+import time
 
 # Selenium deps
 from selenium import webdriver
@@ -197,7 +201,7 @@ class DriverHandler:
 
         # Upload required documents
         try:
-            self.add_documents()
+            self.add_documents(job_details)
         except FileNotFoundError as e:
             print(f"Critical error - required document missing: {e}")
             return False, f"Document not found: {e}"
@@ -219,7 +223,7 @@ class DriverHandler:
 
         return True, "Applied successfully"
 
-    def add_documents(self) -> None:
+    def add_documents(self, job_details) -> None:
         """
         Uploads documents (transcript, cover letter) to the application modal if required.
         Should be called after the application modal is open but before submission.
@@ -272,7 +276,11 @@ class DriverHandler:
 
                 elif "cover letter" in legend_text:
                     if self.config[const.INCLUDE_COVER_LETTER]:
-                        document_path = self.config[const.COVER_LETTER_PATH]
+                        document_path = generate_cover_letter(
+                            job_details[const.JOB_DESCRIPTION],
+                            job_details[const.JOB_ID],
+                            self.config,
+                        )
                         document_type = "Cover Letter"
                     else:
                         print("Skipping cover letter upload (disabled in config)")
@@ -342,7 +350,7 @@ class DriverHandler:
     def parse_job_details(self) -> dict:
         """
         Parses job details from the current job details page.
-        Returns a dict with job_id, company_name, and job_title.
+        Returns a dict with job_id, company_name, job description and job_title.
         """
         # Extract job ID from the current URL
         current_url = self.driver.current_url
@@ -376,10 +384,26 @@ class DriverHandler:
             print(f"Error extracting job title: {e}")
             job_title = None
 
+        # Extract job description - find the container div of the "view more" button
+        try:
+            view_more_button = self.driver.find_element(
+                By.CSS_SELECTOR, "button.view-more-button"
+            )
+            description_container = view_more_button.find_element(By.XPATH, "./..")
+            job_description = description_container.text
+            # Remove trailing button text (e.g. "Less" or "View More") if present
+            for suffix in ["Less", "View More", "View more"]:
+                if job_description.endswith(suffix):
+                    job_description = job_description[: -len(suffix)].rstrip()
+        except Exception as e:
+            print(f"Error extracting job description: {e}")
+            job_description = None
+
         return {
             const.JOB_ID: job_id,
             const.JOB_TITLE: job_title,
             const.COMPANY_NAME: company_name,
+            const.JOB_DESCRIPTION: job_description,
         }
 
     def job_already_applied(self, job_id: str) -> bool:

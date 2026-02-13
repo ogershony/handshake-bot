@@ -8,10 +8,17 @@ dependencies = [
     "selenium>=4.0.0",
     "webdriver-manager>=4.0.0",
     "python-dotenv>=1.0.0",
+    "fpdf2>=2.7.0",
+    "markdown>=3.5",
+    "PyPDF2>=3.0.0",
+    "langchain-openai>=0.1.0",
+    "langchain-community>=0.0.1",
+    "langchain-classic>=0.0.1",
+    "chromadb>=0.4.0",
 ]
 
 [tool.setuptools]
-py-modules = ["main", "driver_handler", "constants"]
+py-modules = ["main", "driver_handler", "constants", "cover_letter_generator"]
 
 [build-system]
 requires = ["setuptools>=61.0"]

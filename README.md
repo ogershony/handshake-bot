@@ -19,7 +19,7 @@ cd HandShake-QuickApply-Bot
 pip install -e .
 ```
 
-This installs `selenium`, `webdriver-manager`, and `python-dotenv`.
+This installs all required dependencies including `selenium`, `webdriver-manager`, `python-dotenv`, `fpdf2`, `markdown`, `PyPDF2`, `langchain`, and `chromadb`.
 
 ## Configuration
 
@@ -43,13 +43,15 @@ Edit `.env` with your settings:
 
 **Document Paths:**
 
+- `RESUME_PATH` - Path to your resume PDF file
 - `TRANSCRIPT_PATH` - Path to your transcript PDF file
-- `COVER_LETTER_PATH` - Path to your cover letter PDF file
+- `COVER_LETTER_PATH` - Directory where generated cover letters are saved
 
 **Authentication:**
 
 - `USERNAME` - Your university SSO username
 - `PASSWORD` - Your university SSO password
+- `OPENAI_API_KEY` - Your OpenAI API key (required for AI-generated cover letters)
 
 **URLs:**
 
@@ -88,10 +90,11 @@ python main.py
 2. Logs into Handshake via SSO
 3. Waits for manual Duo authentication
 4. Navigates through job search pages
-5. Applies to jobs matching your document preferences
-6. Skips jobs requiring documents you've excluded
-7. Skips external applications
-8. Logs applications to `jobs.csv`
+5. Generates tailored cover letters using OpenAI (if enabled)
+6. Applies to jobs matching your document preferences
+7. Skips jobs requiring documents you've excluded
+8. Skips external applications
+9. Logs applications to `jobs.csv`
 
 ## Output
 

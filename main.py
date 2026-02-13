@@ -5,6 +5,7 @@ import constants as const
 # Standard imports
 import os
 import time
+import random
 
 # External imports
 from selenium import webdriver
@@ -25,6 +26,7 @@ config = {
     const.PASSWORD: os.getenv("PASSWORD"),
     const.LOGIN_URL: os.getenv("LOGIN_URL"),
     const.SEARCH_URL: os.getenv("SEARCH_URL"),
+    const.RESUME_PATH: os.getenv("RESUME_PATH"),
     const.TRANSCRIPT_PATH: os.getenv("TRANSCRIPT_PATH"),
     const.COVER_LETTER_PATH: os.getenv("COVER_LETTER_PATH"),
 }
@@ -72,7 +74,7 @@ def main():
                 continue
 
             time.sleep(
-                5
+                random.randint(2, 7)
             )  # Sleep for a few seconds to avoid overwhelming the server and to mimic human behavior
 
         # Navigate to the next page
