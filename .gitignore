@@ -1,3 +1,4 @@
 .env
 documents/*
 .DS_STORE
+jobs.csv
